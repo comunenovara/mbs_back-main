@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { IncentiveAssignationDto } from "../dto/incentive-assignation.dto";
 import { PrismaService } from "../repository/prisma.service";
-import { QueryParamsTools } from "../tools/query-params.class";
+import { QueryParamsTools } from "src/tools/query-params.class";
 
 @Injectable({})
 export class IncentiveAssignationEntityService {

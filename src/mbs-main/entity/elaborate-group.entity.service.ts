@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { ElaborateGroupDto } from "../dto/elaborate-group.dto";
 import { PrismaService } from "../repository/prisma.service";
-import { QueryParamsTools } from "../tools/query-params.class";
+import { QueryParamsTools } from "src/tools/query-params.class";
 
 @Injectable({})
 export class ElaborateGroupEntityService {

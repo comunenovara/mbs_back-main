@@ -1,6 +1,6 @@
 import { ApiProperty, ApiTags } from "@nestjs/swagger";
-import { IsBoolean, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
-import { Decimal } from "@prisma/client/runtime";
+import { IsBoolean, IsDateString, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString } from "class-validator";
+
 
 
 export class DossierTypeDto {

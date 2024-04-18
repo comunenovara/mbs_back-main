@@ -1,6 +1,6 @@
 import { ApiProperty, ApiTags } from "@nestjs/swagger";
 import { IsBoolean, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
-import { Decimal } from "@prisma/client/runtime";
+
 
 import { IncentiveCalculationDto } from "./incentive-calculation.dto";
 import { IncentiveRegulationValueDto } from "./incentive-regulation-value.dto";

@@ -1,6 +1,6 @@
 import { ApiProperty, ApiTags } from "@nestjs/swagger";
 import { IsBoolean, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
-import { Decimal } from "@prisma/client/runtime";
+import { Decimal } from "@prisma/client/runtime/library";
 
 import { OperationTypeDto } from "./operation-type.dto";
 import { AssetDto } from "./asset.dto";
