@@ -1,0 +1,425 @@
+model Asset {
+	@@map("asset")
+
+	id          	Int      @id @default(autoincrement())
+	createdAt   	DateTime @default(now())
+	updatedAt   	DateTime @updatedAt()
+
+
+	description		String
+	address		String?
+	mq		Float?
+
+	relifs	Relif[]
+	operations	Operation[]
+	dossiers	Dossier[]
+}
+
+model Relif {
+	@@map("relif")
+
+	id          	Int      @id @default(autoincrement())
+	createdAt   	DateTime @default(now())
+	updatedAt   	DateTime @updatedAt()
+
+	assetId		Int
+	asset		Asset	@relation(fields: [assetId], references: [id])
+
+
+	description		String?
+	startDate		DateTime
+	endDate		DateTime?
+
+	dossiers	Dossier[]
+}
+
+model OperationType {
+	@@map("operationType")
+
+	id          	Int      @id @default(autoincrement())
+	createdAt   	DateTime @default(now())
+	updatedAt   	DateTime @updatedAt()
+
+
+	description		String
+
+	operations	Operation[]
+}
+
+model Operation {
+	@@map("operation")
+
+	id          	Int      @id @default(autoincrement())
+	createdAt   	DateTime @default(now())
+	updatedAt   	DateTime @updatedAt()
+
+	typeId		Int
+	type		OperationType	@relation(fields: [typeId], references: [id])
+
+	assetId		Int
+	asset		Asset	@relation(fields: [assetId], references: [id])
+
+
+	description		String
+	value		Decimal?
+	startDate		DateTime?
+	endDate		DateTime?
+
+	dossiers	Dossier[]
+}
+
+model DossierType {
+	@@map("dossierType")
+
+	id          	Int      @id @default(autoincrement())
+	createdAt   	DateTime @default(now())
+	updatedAt   	DateTime @updatedAt()
+
+
+	description		String
+	category		String
+
+	dossiers	Dossier[]
+}
+
+model ElaborateGroup {
+	@@map("elaborateGroup")
+
+	id          	Int      @id @default(autoincrement())
+	createdAt   	DateTime @default(now())
+	updatedAt   	DateTime @updatedAt()
+
+
+	description		String
+
+	dossiers	Dossier[]
+}
+
+model Dossier {
+	@@map("dossier")
+
+	id          	Int      @id @default(autoincrement())
+	createdAt   	DateTime @default(now())
+	updatedAt   	DateTime @updatedAt()
+
+	typeId		Int
+	type		DossierType	@relation(fields: [typeId], references: [id])
+
+	elaborateGroupId		Int?
+	elaborateGroup		ElaborateGroup?	@relation(fields: [elaborateGroupId], references: [id])
+
+	assetId		Int?
+	asset		Asset?	@relation(fields: [assetId], references: [id])
+
+	relifId		Int?
+	relif		Relif?	@relation(fields: [relifId], references: [id])
+
+	operationId		Int?
+	operation		Operation?	@relation(fields: [operationId], references: [id])
+
+
+	description		String
+
+}
+
+model ProcurementType {
+	@@map("procurementType")
+
+	id          	Int      @id @default(autoincrement())
+	createdAt   	DateTime @default(now())
+	updatedAt   	DateTime @updatedAt()
+
+
+	description		String
+
+	governativeProcurementLots	GovernativeProcurementLot[]
+	incentiveWithhelds	IncentiveWithheld[]
+	incentiveCalculationMethods	IncentiveCalculationMethod[]
+	incentiveStages	IncentiveStage[]
+	incentiveRoles	IncentiveRole[]
+}
+
+model GovernativeProject {
+	@@map("governativeProject")
+
+	id          	Int      @id @default(autoincrement())
+	createdAt   	DateTime @default(now())
+	updatedAt   	DateTime @updatedAt()
+
+
+	code		String?
+	description		String
+	amount		Float?
+
+	governativeProjectProcurementLots	GovernativeProjectProcurementLot[]
+}
+
+model GovernativeProcurementLot {
+	@@map("governativeProcurementLot")
+
+	id          	Int      @id @default(autoincrement())
+	createdAt   	DateTime @default(now())
+	updatedAt   	DateTime @updatedAt()
+
+	procurementTypeId		Int
+	procurementType		ProcurementType	@relation(fields: [procurementTypeId], references: [id])
+
+
+	code		String?
+	description		String
+	amount		Float?
+
+	governativeProjectProcurementLots	GovernativeProjectProcurementLot[]
+	incentiveCalculations	IncentiveCalculation[]
+}
+
+model GovernativeProjectProcurementLot {
+	@@map("governativeProjectProcurementLot")
+
+	id          	Int      @id @default(autoincrement())
+	createdAt   	DateTime @default(now())
+	updatedAt   	DateTime @updatedAt()
+
+	projectId		Int
+	project		GovernativeProject	@relation(fields: [projectId], references: [id])
+
+	procurementLotId		Int
+	procurementLot		GovernativeProcurementLot	@relation(fields: [procurementLotId], references: [id])
+
+
+	amount		Float?
+
+}
+
+model IncentiveBeneficiary {
+	@@map("incentiveBeneficiary")
+
+	id          	Int      @id @default(autoincrement())
+	createdAt   	DateTime @default(now())
+	updatedAt   	DateTime @updatedAt()
+
+
+	description		String
+	active		Boolean
+
+	incentiveRoleAssignations	IncentiveRoleAssignation[]
+}
+
+model IncentiveRegulation {
+	@@map("incentiveRegulation")
+
+	id          	Int      @id @default(autoincrement())
+	createdAt   	DateTime @default(now())
+	updatedAt   	DateTime @updatedAt()
+
+
+	description		String
+
+	incentiveWithhelds	IncentiveWithheld[]
+	incentiveCalculationMethods	IncentiveCalculationMethod[]
+	incentiveStages	IncentiveStage[]
+	incentiveRoles	IncentiveRole[]
+	incentiveCalculations	IncentiveCalculation[]
+}
+
+model IncentiveWithheld {
+	@@map("incentiveWithheld")
+
+	id          	Int      @id @default(autoincrement())
+	createdAt   	DateTime @default(now())
+	updatedAt   	DateTime @updatedAt()
+
+	procurementTypeId		Int
+	procurementType		ProcurementType	@relation(fields: [procurementTypeId], references: [id])
+
+	regulationId		Int
+	regulation		IncentiveRegulation	@relation(fields: [regulationId], references: [id])
+
+
+	description		String
+	active		Boolean
+	amount		Float?
+	percentage		Float?
+
+}
+
+model IncentiveCalculationMethod {
+	@@map("incentiveCalculationMethod")
+
+	id          	Int      @id @default(autoincrement())
+	createdAt   	DateTime @default(now())
+	updatedAt   	DateTime @updatedAt()
+
+	procurementTypeId		Int
+	procurementType		ProcurementType	@relation(fields: [procurementTypeId], references: [id])
+
+	regulationId		Int
+	regulation		IncentiveRegulation	@relation(fields: [regulationId], references: [id])
+
+
+	description		String
+	code		String
+
+	incentiveCalculationFactors	IncentiveCalculationFactor[]
+}
+
+model IncentiveCalculationFactor {
+	@@map("incentiveCalculationFactor")
+
+	id          	Int      @id @default(autoincrement())
+	createdAt   	DateTime @default(now())
+	updatedAt   	DateTime @updatedAt()
+
+	incentiveCalculationMethodId		Int?
+	incentiveCalculationMethod		IncentiveCalculationMethod?	@relation(fields: [incentiveCalculationMethodId], references: [id])
+
+
+	minval		Float?
+	maxval		Float?
+	defaultval		Float?
+
+}
+
+model IncentiveStage {
+	@@map("incentiveStage")
+
+	id          	Int      @id @default(autoincrement())
+	createdAt   	DateTime @default(now())
+	updatedAt   	DateTime @updatedAt()
+
+	procurementTypeId		Int
+	procurementType		ProcurementType	@relation(fields: [procurementTypeId], references: [id])
+
+	regulationId		Int
+	regulation		IncentiveRegulation	@relation(fields: [regulationId], references: [id])
+
+
+	description		String
+
+	incentiveRegulationValues	IncentiveRegulationValue[]
+}
+
+model IncentiveRole {
+	@@map("incentiveRole")
+
+	id          	Int      @id @default(autoincrement())
+	createdAt   	DateTime @default(now())
+	updatedAt   	DateTime @updatedAt()
+
+	procurementTypeId		Int
+	procurementType		ProcurementType	@relation(fields: [procurementTypeId], references: [id])
+
+	regulationId		Int
+	regulation		IncentiveRegulation	@relation(fields: [regulationId], references: [id])
+
+
+	description		String
+
+	incentiveRegulationValues	IncentiveRegulationValue[]
+	incentiveRoleAssignations	IncentiveRoleAssignation[]
+}
+
+model IncentiveRegulationValue {
+	@@map("incentiveRegulationValue")
+
+	id          	Int      @id @default(autoincrement())
+	createdAt   	DateTime @default(now())
+	updatedAt   	DateTime @updatedAt()
+
+	stageId		Int
+	stage		IncentiveStage	@relation(fields: [stageId], references: [id])
+
+	roleId		Int
+	role		IncentiveRole	@relation(fields: [roleId], references: [id])
+
+
+	minval		Float?
+	maxval		Float?
+	defaultval		Float?
+
+	incentiveCalculationValues	IncentiveCalculationValue[]
+}
+
+model IncentiveCalculation {
+	@@map("incentiveCalculation")
+
+	id          	Int      @id @default(autoincrement())
+	createdAt   	DateTime @default(now())
+	updatedAt   	DateTime @updatedAt()
+
+	governativeProcurementLotId		Int
+	governativeProcurementLot		GovernativeProcurementLot	@relation(fields: [governativeProcurementLotId], references: [id])
+
+	regulationId		Int
+	regulation		IncentiveRegulation	@relation(fields: [regulationId], references: [id])
+
+
+	description		String
+	confirmed		Boolean
+	preAmount		Float?
+	amount		Float?
+
+	incentiveRoleAssignations	IncentiveRoleAssignation[]
+	incentiveCalculationValues	IncentiveCalculationValue[]
+}
+
+model IncentiveRoleAssignation {
+	@@map("incentiveRoleAssignation")
+
+	id          	Int      @id @default(autoincrement())
+	createdAt   	DateTime @default(now())
+	updatedAt   	DateTime @updatedAt()
+
+	beneficiaryId		Int
+	beneficiary		IncentiveBeneficiary	@relation(fields: [beneficiaryId], references: [id])
+
+	calculationId		Int
+	calculation		IncentiveCalculation	@relation(fields: [calculationId], references: [id])
+
+	roleId		Int
+	role		IncentiveRole	@relation(fields: [roleId], references: [id])
+
+
+
+	incentiveAssignations	IncentiveAssignation[]
+}
+
+model IncentiveCalculationValue {
+	@@map("incentiveCalculationValue")
+
+	id          	Int      @id @default(autoincrement())
+	createdAt   	DateTime @default(now())
+	updatedAt   	DateTime @updatedAt()
+
+	calculationId		Int
+	calculation		IncentiveCalculation	@relation(fields: [calculationId], references: [id])
+
+	regulationValueId		Int
+	regulationValue		IncentiveRegulationValue	@relation(fields: [regulationValueId], references: [id])
+
+
+	value		Float?
+
+	incentiveAssignations	IncentiveAssignation[]
+}
+
+model IncentiveAssignation {
+	@@map("incentiveAssignation")
+
+	id          	Int      @id @default(autoincrement())
+	createdAt   	DateTime @default(now())
+	updatedAt   	DateTime @updatedAt()
+
+	assignationId		Int
+	assignation		IncentiveRoleAssignation	@relation(fields: [assignationId], references: [id])
+
+	calculationValueId		Int
+	calculationValue		IncentiveCalculationValue	@relation(fields: [calculationValueId], references: [id])
+
+
+	value		Float?
+	preAmount		Float?
+	amount		Float?
+
+}
+
