@@ -1,0 +1,291 @@
+entity ProcurementType (main_procurement_type) {
+	description String required
+}
+
+
+
+
+
+
+
+
+entity GovernativeProject (main_governative_project) {
+	code String
+	description String required
+	amount Float
+}
+relationship ManyToOne {
+	GovernativeProcurementLot { procurementType (description) required } to ProcurementType
+}
+
+entity GovernativeProcurementLot (main_governative_procurement_lot) {
+	code String
+	description String required
+	amount Float
+}
+relationship ManyToOne {
+	GovernativeProjectAndProcurementLot { procurementLot (description) required } to GovernativeProcurementLot
+}
+
+
+entity GovernativeProjectProcurementLot (main_governative_project_procurement_lot) {
+	amount Float
+}
+relationship ManyToOne {
+	GovernativeProjectProcurementLot { project (description) required } to GovernativeProject
+	GovernativeProjectProcurementLot { procurementLot (description) required } to GovernativeProcurementLot
+}
+
+
+
+
+// Incentive
+
+relationship ManyToOne {
+	IncentiveWithheld { procurementType (description) required } to ProcurementType
+	IncentiveCalculationMethod { procurementType (description) required } to ProcurementType
+	IncentiveStage { procurementType (description) required } to ProcurementType
+	IncentiveRole { procurementType (description) required } to ProcurementType
+
+	IncentiveCalculation { governativeProcurementLot (description) required } to GovernativeProcurementLot
+}
+
+
+
+entity IncentiveBeneficiary (in_incentive_beneficiary) {
+	description String required
+	active Boolean required
+}
+
+
+entity IncentiveRegulation (in_incentive_regulation) {
+	description String required
+}
+relationship ManyToOne {
+	IncentiveWithheld { regulation (description) required } to IncentiveRegulation
+	IncentiveCalculationMethod { regulation (description) required } to IncentiveRegulation
+	IncentiveStage { regulation (description) required } to IncentiveRegulation
+	IncentiveRole { regulation (description) required } to IncentiveRegulation
+
+	IncentiveCalculation { regulation (description) required } to IncentiveRegulation
+}
+
+
+entity IncentiveWithheld (inreg_withheld) {
+	description String required
+	active Boolean required
+	amount Float
+	percentage Float
+}
+
+
+entity IncentiveCalculationMethod (inreg_calculation_method) {
+	description String required
+	code String required
+}
+entity IncentiveCalculationFactor (inreg_calculation_factor) {
+	minval Float
+	maxval Float
+	defaultval Float
+}
+relationship OneToMany {
+	IncentiveCalculationMethod { factors } to IncentiveCalculationFactor
+}
+
+
+entity IncentiveStage (inreg_stage) {
+	description String required
+}
+entity IncentiveRole (inreg_role) {
+	description String required
+}
+entity IncentiveRegulationValue (inreg_incentive_value) {
+	minval Float
+	maxval Float
+	defaultval Float
+}
+relationship ManyToOne {
+	IncentiveRegulationValue { stage (description) required } to IncentiveStage
+	IncentiveRegulationValue { role (description) required } to IncentiveRole
+}
+
+
+
+
+
+entity IncentiveCalculation (in_incentive_calculation) {
+	description String required
+	confirmed Boolean required
+	preAmount Float
+	amount Float
+}
+
+
+
+entity IncentiveRoleAssignation (incal_role_assignation) {
+
+}
+relationship ManyToOne {
+	IncentiveRoleAssignation { beneficiary (description) required } to IncentiveBeneficiary
+	IncentiveRoleAssignation { calculation (description) required } to IncentiveCalculation
+	IncentiveRoleAssignation { role (description) required } to IncentiveRole
+}
+
+
+entity IncentiveCalculationValue (incal_incentive_value) {
+	value Float
+}
+relationship ManyToOne {
+	IncentiveCalculationValue { calculation (description) required } to IncentiveCalculation
+	IncentiveCalculationValue { regulationValue (description) required } to IncentiveRegulationValue
+}
+
+entity IncentiveAssignation (incal_incentive_value) {
+	value Float
+	preAmount Float
+	amount Float
+}
+relationship ManyToOne {
+	IncentiveAssignation { assignation (description) required } to IncentiveRoleAssignation
+	IncentiveAssignation { calculationValue (description) required } to IncentiveCalculationValue
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+entity Asset {
+	description String required,
+	address String,
+	mq Float,
+}
+
+entity Relif {
+	description String,
+	startDate ZonedDateTime required,
+	endDate ZonedDateTime,
+}
+relationship ManyToOne {
+	Relif {asset (description) required} to Asset
+}
+
+entity OperationType {
+	description String required,
+}
+entity Operation {
+	description String required,
+	value BigDecimal,
+	startDate ZonedDateTime,
+	endDate ZonedDateTime,
+}
+relationship ManyToOne {
+	Operation {type (description) required} to OperationType
+	Operation {asset (description) required} to Asset
+}
+
+enum DossierTypeCategory {
+	ASSET, RELIEF, OPERATION
+}
+entity DossierType {
+	description String required,
+	category DossierTypeCategory required,
+}
+entity ElaborateGroup {
+	description String required,
+}
+entity Dossier {
+	description String required,
+}
+relationship ManyToOne {
+	Dossier {type (description) required} to DossierType
+	Dossier {elaborateGroup (description)} to ElaborateGroup
+	Dossier {asset (description)} to Asset
+	Dossier {relif (description)} to Relif
+	Dossier {operation (description)} to Operation
+}
+
+
+
+
+
+
+
+
+
+
+
+entity Asset {
+	description String required,
+	address String,
+	mq Float,
+}
+
+entity Relif {
+	description String,
+	startDate ZonedDateTime required,
+	endDate ZonedDateTime,
+}
+relationship ManyToOne {
+	Relif {asset (description) required} to Asset
+}
+
+entity OperationType {
+	description String required,
+}
+entity Operation {
+	description String required,
+	value BigDecimal,
+	startDate ZonedDateTime,
+	endDate ZonedDateTime,
+}
+relationship ManyToOne {
+	Operation {type (description) required} to OperationType
+	Operation {asset (description) required} to Asset
+}
+
+enum DossierTypeCategory {
+	ASSET, RELIEF, OPERATION
+}
+entity DossierType {
+	description String required,
+	category DossierTypeCategory required,
+}
+entity ElaborateGroup {
+	description String required,
+}
+entity Dossier {
+	description String required,
+}
+relationship ManyToOne {
+	Dossier {type (description) required} to DossierType
+	Dossier {elaborateGroup (description)} to ElaborateGroup
+	Dossier {asset (description)} to Asset
+	Dossier {relif (description)} to Relif
+	Dossier {operation (description)} to Operation
+}
