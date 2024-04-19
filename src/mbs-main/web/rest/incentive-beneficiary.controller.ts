@@ -11,7 +11,7 @@ export class IncentiveBeneficiaryController {
 
     ) {}
 
-    @Post('incentiveBeneficiarys')
+    @Post('incentiveBeneficiaries')
     @ApiResponse({ status: 201, description: 'The record has been successfully created.'})
     @ApiResponse({ status: 400, description: 'Bad request.'})
     @ApiResponse({ status: 403, description: 'Forbidden.'})
@@ -22,7 +22,7 @@ export class IncentiveBeneficiaryController {
         return this.incentiveBeneficiaryBusinessService.createIncentiveBeneficiary(incentiveBeneficiaryDto);
     }
 
-    @Put('incentiveBeneficiarys')
+    @Put('incentiveBeneficiaries')
     @ApiResponse({ status: 201, description: 'The record has been successfully updated.'})
     @ApiResponse({ status: 400, description: 'Bad request.'})
     @ApiResponse({ status: 403, description: 'Forbidden.'})
@@ -33,7 +33,7 @@ export class IncentiveBeneficiaryController {
         return this.incentiveBeneficiaryBusinessService.editIncentiveBeneficiary(incentiveBeneficiaryDto);
     }
 
-    @Get('incentiveBeneficiarys')
+    @Get('incentiveBeneficiaries')
     @ApiResponse({ status: 200, description: 'List of incentiveBeneficiarys.'})
     @ApiResponse({ status: 403, description: 'Forbidden.'})
     getAllIncentiveBeneficiarys(@Query() queryParams): Promise<any> {
@@ -41,7 +41,7 @@ export class IncentiveBeneficiaryController {
         return this.incentiveBeneficiaryBusinessService.searchIncentiveBeneficiaries(filters);
     }
 
-    @Get('incentiveBeneficiarys/count')
+    @Get('incentiveBeneficiaries/count')
     @ApiResponse({ status: 200, description: 'Count of incentiveBeneficiarys.'})
     @ApiResponse({ status: 403, description: 'Forbidden.'})
     getIncentiveBeneficiarysCount(@Query() queryParams): Promise<number> {
@@ -49,7 +49,7 @@ export class IncentiveBeneficiaryController {
         return this.incentiveBeneficiaryBusinessService.countIncentiveBeneficiaries(filters);
     }
 
-    @Get('incentiveBeneficiarys/:id')
+    @Get('incentiveBeneficiaries/:id')
     @ApiResponse({ status: 200, description: 'IncentiveBeneficiary detail.'})
     @ApiResponse({ status: 403, description: 'Forbidden.'})
     async getIncentiveBeneficiary(@Param('id') id: number): Promise<IncentiveBeneficiaryDto> {
@@ -58,7 +58,7 @@ export class IncentiveBeneficiaryController {
         return incentiveBeneficiaryDto;
     }
 
-    @Delete('incentiveBeneficiarys/:id/delete')
+    @Delete('incentiveBeneficiaries/:id/delete')
     @ApiResponse({ status: 200, description: 'IncentiveBeneficiary deleted.'})
     @ApiResponse({ status: 403, description: 'Forbidden.'})
     deleteIncentiveBeneficiary(@Param('id') id: number) {
