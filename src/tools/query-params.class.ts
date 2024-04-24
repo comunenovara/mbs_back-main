@@ -72,6 +72,7 @@ export class QueryParamsTools {
 				};
 			}
 			if (entities.length > 0) {
+				entities = entities.reverse();
 				for (const parentEntity of entities) {
 					tree = {
 						[parentEntity]: tree
