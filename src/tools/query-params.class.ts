@@ -1,3 +1,5 @@
+import { merge } from 'lodash';
+
 export class QueryParamsTools {
 
 
@@ -73,13 +75,12 @@ export class QueryParamsTools {
 			}
 			if (entities.length > 0) {
 				entities = entities.reverse();
-				for (const parentEntity of entities) {
+				for (const parentEntity of entities)
 					tree = {
 						[parentEntity]: tree
 					}
-				}
 			}
-			wheres = { ...wheres, ...tree };
+			wheres = merge(wheres, tree);
 		}
 		return wheres;
 	}
