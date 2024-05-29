@@ -65,7 +65,11 @@ export class IncentiveAssignationEntityService {
 		{
 			prismaRequestArgs['include'] = {
 				assignation: true,
-				calculationValue: true,
+				calculationValue: {
+					include: {
+						regulationValue: true,
+					}
+				},
 			};
 		}
 		// Order
