@@ -64,7 +64,7 @@ export class QueryParamsTools {
 						else {
 							entityFilters = {
 								[paramWhere['key']]: filters[param],
-								mode: 'insensitive',
+								//mode: 'insensitive', # commentato percè andava in errore con descriptionContains va capito a cosa serviva
 							};
 						}
 					}
